@@ -6,9 +6,9 @@
 library("dplyr")
 
 # read in three datasets
-nfl_stats <- read.csv("csvs/nfl_player_stats.csv" , stringsAsFactors = F)
-dfs_data  <- read.csv("csvs/dfs_data.csv" , stringsAsFactors = F)
-def_teams <- read.csv("csvs/def_teams.csv" , stringsAsFactors = F)
+nfl_stats <- read.csv("csvs/2019_nfl_player_stats.csv" , stringsAsFactors = F)
+dfs_data  <- read.csv("csvs/2019_dfs_data.csv" , stringsAsFactors = F)
+def_teams <- read.csv("csvs/2019_def_teams.csv" , stringsAsFactors = F)
 
 # add dfs salary data to dataframe
 nfl_dfs <- left_join(nfl_stats,
@@ -39,7 +39,7 @@ sched <- nfl_stats[nfl_stats$Team != "",] %>%
           summarise(game_date = max(date))
 
 # add date to def teams dataser
-def_teams_date <- left_join(def_teams, 
+def_teams_date <- left_join(def_teams,
                               sched,
                               by = c("Week" = "week",
                                      "Year" = "season",
@@ -58,7 +58,7 @@ names(def_teams_clean) <- tolower(names(nfl_dfs_clean))
 nfl_dfs_full <- rbind(nfl_dfs_clean, def_teams_clean)
 
 # convert all FBs to RBs and remove blank positions
-nfl_dfs_full[nfl_dfs_full$pos == 'FB', "pos"] <- 'RB' 
+nfl_dfs_full[nfl_dfs_full$pos == 'FB', "pos"] <- 'RB'
 nfl_dfs_full <- nfl_dfs_full[nfl_dfs_full$pos != "",]
 
 # add in day of week
@@ -66,4 +66,4 @@ nfl_dfs_full$dow <- strftime(nfl_dfs_full$date,'%a')
 nfl_dfs_full <- nfl_dfs_full[,c(1:4,65,5:64)]
 
 # save final dataset to csv
-# write.csv(nfl_dfs_full, "csvs/nfl_dfs_2018.csv", row.names = F, na = "")
+# write.csv(nfl_dfs_full, "csvs/2019_nfl_dfs.csv", row.names = F, na = "")

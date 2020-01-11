@@ -12,17 +12,17 @@ url <- 'http://rotoguru1.com/cgi-bin/fyday.pl'
 # DF to hold all DFS data
 dfs_data <- c()
 
-# pull just 2018 nfl data
-year <- 2018
+# pull just 2019 nfl data
+year <- 2019
 
 # loop through all 17 weeks of NFL season to scrape dfs data
 for (i in 1:17){
-  # scrape webpage and text values 
+  # scrape webpage and text values
   rotoguru <- read_html(paste0(url,"?week=",i,"&year=",year,"&game=dk&scsv=1"))
   dfs <-rotoguru %>%
       html_node("pre") %>%
       html_text()
-  
+
   # convert to CSV
   dfs_df <- read.csv(textConnection(dfs),sep = ";", stringsAsFactors = F)
   dfs_data <- rbind(dfs_data, dfs_df)
@@ -76,5 +76,5 @@ def_teams <- dfs_data[dfs_data$Pos == 'Def',]
 def_teams <- def_teams[,c("Year","Week","GID","Team_fmt","Opp_fmt","h.a","Name","Pos","DK.points","DK.salary")]
 
 # save two datasets
-# write.csv(dfs_data , file = "csvs/dfs_data.csv", row.names = F)
-# write.csv(def_teams , file = "csvs/def_teams.csv", row.names = F)
+write.csv(dfs_data , file = "csvs/2019_dfs_data.csv", row.names = F)
+write.csv(def_teams , file = "csvs/2019_def_teams.csv", row.names = F)
