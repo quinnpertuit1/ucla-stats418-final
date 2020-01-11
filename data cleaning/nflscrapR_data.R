@@ -87,4 +87,4 @@ na_plyrs <- PlyrGmDat_2019_pos[PlyrGmDat_2019_pos$fan_pts > 0 & is.na(PlyrGmDat_
 head(na_plyrs[order(-na_plyrs$fan_pts),c("name","week","fan_pts")])
 
 # save dataset
-write.csv(PlyrGmDat_2019_pos , "csvs/2019_nfl_player_stats.csv", row.names = F, na = "")
+write_csv(PlyrGmDat_2019_pos, "2019_nfl_player_stats.csv")

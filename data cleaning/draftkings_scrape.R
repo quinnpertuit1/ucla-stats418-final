@@ -76,5 +76,5 @@ def_teams <- dfs_data[dfs_data$Pos == 'Def',]
 def_teams <- def_teams[,c("Year","Week","GID","Team_fmt","Opp_fmt","h.a","Name","Pos","DK.points","DK.salary")]
 
 # save two datasets
-write.csv(dfs_data , file = "csvs/2019_dfs_data.csv", row.names = F)
-write.csv(def_teams , file = "csvs/2019_def_teams.csv", row.names = F)
+write_csv(dfs_data , "2019_dfs_data.csv")
+write_csv(def_teams , "2019_def_teams.csv")

@@ -6,9 +6,9 @@
 library("dplyr")
 
 # read in three datasets
-nfl_stats <- read.csv("csvs/2019_nfl_player_stats.csv" , stringsAsFactors = F)
-dfs_data  <- read.csv("csvs/2019_dfs_data.csv" , stringsAsFactors = F)
-def_teams <- read.csv("csvs/2019_def_teams.csv" , stringsAsFactors = F)
+nfl_stats <- read.csv("/Users/quinnx/Documents/GitHub/ucla-stats418-final/shiny/app/2019_nfl_player_stats.csv" , stringsAsFactors = F)
+dfs_data  <- read.csv("/Users/quinnx/Documents/GitHub/ucla-stats418-final/shiny/app/2019_dfs_data.csv" , stringsAsFactors = F)
+def_teams <- read.csv("/Users/quinnx/Documents/GitHub/ucla-stats418-final/shiny/app/2019_def_teams.csv" , stringsAsFactors = F)
 
 # add dfs salary data to dataframe
 nfl_dfs <- left_join(nfl_stats,
@@ -55,15 +55,16 @@ names(nfl_dfs_clean) <- tolower(names(nfl_dfs_clean))
 names(def_teams_clean) <- tolower(names(nfl_dfs_clean))
 
 # combine player stats with team stats into merged df
-nfl_dfs_full <- rbind(nfl_dfs_clean, def_teams_clean)
+nfl_dfs_full <- rbind(nfl_dfs_clean, def_teams_clean) %>% as_tibble()
 
 # convert all FBs to RBs and remove blank positions
-nfl_dfs_full[nfl_dfs_full$pos == 'FB', "pos"] <- 'RB'
-nfl_dfs_full <- nfl_dfs_full[nfl_dfs_full$pos != "",]
+
+nfl_dfs_full = nfl_dfs_full %>% mutate(pos = ifelse(pos=='FB','RB',pos)) %>%
+  dplyr::filter(!is.na(pos))
 
 # add in day of week
 nfl_dfs_full$dow <- strftime(nfl_dfs_full$date,'%a')
 nfl_dfs_full <- nfl_dfs_full[,c(1:4,65,5:64)]
 
 # save final dataset to csv
-# write.csv(nfl_dfs_full, "csvs/2019_nfl_dfs.csv", row.names = F, na = "")
+write_csv(nfl_dfs_full, "2019_nfl_dfs.csv")
